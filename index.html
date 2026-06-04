@@ -509,6 +509,21 @@
     h1 { font-size: 1.5rem; }
     .brand-logo { font-size: 1.8rem; }
 }
+        /* 移动端手机与表格专项适配 */
+@media (max-width: 550px) {
+    body { padding: 15px 10px !important; }
+    .container { padding: 15px !important; }
+    .wheel-outer { width: 260px !important; height: 260px !important; }
+    .info-section { grid-template-columns: 1fr !important; margin-top: 15px !important; }
+    .pointer { transform: translate(-50%, -60%) scale(0.85) !important; }
+    h1 { font-size: 1.5rem !important; }
+    .brand-logo { font-size: 1.8rem !important; }
+    
+    .info-card { padding: 15px 10px !important; }
+    .info-card h3 { font-size: 0.95rem !important; }
+    .winners-table th, .winners-table td { padding: 8px 4px !important; font-size: 0.75rem !important; }
+    .winners-table th { font-size: 0.65rem !important; letter-spacing: 0 !important; }
+}
     </style>
 </head>
 <body>
