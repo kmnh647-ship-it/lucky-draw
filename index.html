@@ -19,11 +19,11 @@
         }
 
         * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
         
         body {
             background-color: var(--bg-black);
@@ -537,14 +537,17 @@
 </head>
 <body>
 
+    <!-- Brand Header -->
     <div class="brand-header">
         <div class="brand-logo">SP2S<span> GLOBAL</span></div>
     </div>
 
+    <!-- Main Lucky Draw Card -->
     <div class="container">
         <h1>SPIN & WIN</h1>
         <p class="subtitle">Enter your exclusive draw code below to claim premium prizes from the SP2S campaign.</p>
 
+        <!-- Input & Error Area -->
         <div class="control-panel">
             <div class="input-group">
                 <input type="text" id="codeInput" class="code-input" placeholder="Enter Draw Code Here..." autocomplete="off">
@@ -553,7 +556,9 @@
             <div id="errorMsg" class="error-message"></div>
         </div>
 
+        <!-- Wheel Display -->
         <div class="wheel-outer">
+            <!-- Custom Top Pointer Pin pointing straight down -->
             <div class="pointer-container">
                 <svg viewBox="0 0 100 100" width="100%" height="100%">
                     <path d="M50 95 L15 25 A35 35 0 0 1 85 25 Z" fill="#ff5e00" stroke="#ffffff" stroke-width="5" stroke-linejoin="round"/>
@@ -561,10 +566,13 @@
                     <circle cx="50" cy="40" r="6" fill="#ff5e00"/>
                 </svg>
             </div>
+            <!-- Outer dynamic flashing light bulbs -->
             <div class="bulbs-container" id="bulbs"></div>
+            <!-- Interactive Canvas Wheel -->
             <canvas id="wheelCanvas" width="400" height="400"></canvas>
         </div>
 
+        <!-- Winners Table (Bottom Card) -->
         <div class="info-section">
             <div class="info-card">
                 <h3>🏆 Latest Winners <span>Live Draw</span></h3>
@@ -577,19 +585,22 @@
                         </tr>
                     </thead>
                     <tbody id="winnersBody">
-                        </tbody>
+                        <!-- Winners records dynamically appended here -->
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 
+    <!-- Collapsible demo helper for quick auditing and evaluation -->
     <div class="demo-controls">
         <details>
             <summary>Developer Testing Tools (Demo Helper)</summary>
             <div class="demo-details-content">
                 <p>To help verify the draw functionality and anti-abuse verification, you can click any of the remaining valid codes below to quickly paste it into the input box. Once a code is spent, it is removed from the list and cannot be reused.</p>
                 <div class="demo-code-grid" id="demoCodeGrid">
-                    </div>
+                    <!-- Badges render here -->
+                </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; border-top: 1px dashed #222; padding-top: 10px;">
                     <div id="remainingQuotasDisplay" style="font-family: monospace; font-size: 0.75rem;"></div>
                     <button class="reset-state-btn" onclick="resetSystemState()">Reset Session State</button>
@@ -598,6 +609,7 @@
         </details>
     </div>
 
+    <!-- Result Announcement Modal popup -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-title" id="modalTitle">Congratulations!</div>
@@ -875,11 +887,6 @@
                 return;
             }
 
-            // --- 核心修改：防重逻辑 ---
-            validCodes.splice(codeIndex, 1);
-            localStorage.setItem('sp2s_valid_codes', JSON.stringify(validCodes));
-            // -------------------------
-
             // Lock inputs to prevent double-submit or refresh abuse
             isSpinning = true;
             drawBtn.disabled = true;
@@ -922,6 +929,10 @@
 
             // Execute draw state persist and success modals upon spin completion
             setTimeout(() => {
+                // Consume code
+                validCodes.splice(codeIndex, 1);
+                localStorage.setItem('sp2s_valid_codes', JSON.stringify(validCodes));
+
                 // Process prize winner registration & quota deduction
                 let finalAwardText = "Better Luck Next Time";
                 if (resultPrize.id !== 'tryagain') {
