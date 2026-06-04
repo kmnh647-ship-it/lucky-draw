@@ -19,11 +19,11 @@
         }
 
         * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
         
         body {
             background-color: var(--bg-black);
@@ -498,41 +498,38 @@
             background: rgba(255, 69, 58, 0.05);
         }
 
-       /* Responsive adjustments */
-@media (max-width: 550px) {
-    body { padding: 15px 10px; }
-    .container { padding: 15px; }
-    .wheel-outer { width: 260px; height: 260px; }
-    .info-section { grid-template-columns: 1fr; }
-    .pointer { transform: translate(-50%, -60%) scale(0.85); }
-    .pointer-container { width: 40px; height: 40px; top: -20px; }
-    h1 { font-size: 1.5rem; }
-    .brand-logo { font-size: 1.8rem; }
-}
-        /* 移动端手机与表格专项适配 */
-@media (max-width: 550px) {
-    /* 强制限制整体宽度，防止溢出 */
-    body { width: 100vw; overflow-x: hidden; padding: 10px !important; }
-    .container { width: 95% !important; margin: 0 auto !important; padding: 10px !important; }
-    
-    /* 缩小转盘区域 */
-    .wheel-outer { width: 240px !important; height: 240px !important; }
-    
-    /* 表格容器溢出处理 */
-    .info-card { 
-        width: 100% !important; 
-        padding: 10px 5px !important; 
-        overflow-x: hidden !important; 
-    }
-    
-    /* 调整表格字体，确保三列能挤进屏幕 */
-    .winners-table { width: 100% !important; table-layout: fixed; }
-    .winners-table th, .winners-table td { 
-        padding: 6px 2px !important; 
-        font-size: 11px !important; 
-        word-break: break-all; 
-    }
-}
+        /* Responsive adjustments */
+        @media (max-width: 550px) {
+            body { padding: 15px 10px; }
+            .container { padding: 15px; }
+            .wheel-outer { width: 260px; height: 260px; }
+            .info-section { grid-template-columns: 1fr; }
+            .pointer { transform: translate(-50%, -60%) scale(0.85); }
+            .pointer-container { width: 40px; height: 40px; top: -20px; }
+            h1 { font-size: 1.5rem; }
+            .brand-logo { font-size: 1.8rem; }
+        }
+        
+        /* Mobile phone and table special adaptation */
+        @media (max-width: 550px) {
+            body { width: 100vw; overflow-x: hidden; padding: 10px !important; }
+            .container { width: 95% !important; margin: 0 auto !important; padding: 10px !important; }
+            
+            .wheel-outer { width: 240px !important; height: 240px !important; }
+            
+            .info-card { 
+                width: 100% !important; 
+                padding: 10px 5px !important; 
+                overflow-x: hidden !important; 
+            }
+            
+            .winners-table { width: 100% !important; table-layout: fixed; }
+            .winners-table th, .winners-table td { 
+                padding: 6px 2px !important; 
+                font-size: 11px !important; 
+                word-break: break-all; 
+            }
+        }
     </style>
 </head>
 <body>
@@ -636,18 +633,14 @@
         let isSpinning = false;
         let currentRotation = 0;
 
-        // Symmetric 8-sector wheel layout designed for SP2S premium colors
-        // Arranged in an alternating design to build drama and visually balance the wheel
+        // Symmetric 5-sector wheel layout designed for SP2S premium colors (Try Again removed)
         const sectors = [
-    { id: 'prize1', text: '1st Prize', detail: 'Rp 1.00 Million Cash', color: '#ff5e00', textColor: '#ffffff', isPrize: true },
-    { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false },
-    { id: 'prize3', text: '3rd Prize', detail: 'SEN X Device + 1 Pod', color: '#161616', textColor: '#ff5e00', isPrize: true },
-    { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false },
-    { id: 'prize2', text: '2nd Prize', detail: 'Rp 750 Thousand Cash', color: '#ff5e00', textColor: '#ffffff', isPrize: true },
-    { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false },
-    { id: 'prize4', text: '4th Prize', detail: '3 Pods Pack', color: '#161616', textColor: '#ff5e00', isPrize: true },
-    { id: 'prize5', text: '5th Prize', detail: 'SP2S Exclusive Merchandise', color: '#222222', textColor: '#ffffff', isPrize: true }
-];
+            { id: 'prize1', text: '1st Prize', detail: 'Rp 1.00 Million Cash', color: '#ff5e00', textColor: '#ffffff', isPrize: true },
+            { id: 'prize3', text: '3rd Prize', detail: 'SEN X Device + 1 Pod', color: '#161616', textColor: '#ff5e00', isPrize: true },
+            { id: 'prize2', text: '2nd Prize', detail: 'Rp 750 Thousand Cash', color: '#ff5e00', textColor: '#ffffff', isPrize: true },
+            { id: 'prize4', text: '4th Prize', detail: '3 Pods Pack', color: '#161616', textColor: '#ff5e00', isPrize: true },
+            { id: 'prize5', text: '5th Prize', detail: 'SP2S Exclusive Merchandise', color: '#222222', textColor: '#ffffff', isPrize: true }
+        ];
 
         // 3. UI Element references
         const canvas = document.getElementById('wheelCanvas');
@@ -723,53 +716,37 @@
 
         // Draw the wheel using Canvas API with premium styling elements
         function drawWheel() {
-    const numSectors = sectors.length;
-    const arc = Math.PI * 2 / numSectors;
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-    const radius = centerX - 12;
+            const numSectors = sectors.length;
+            const arc = Math.PI * 2 / numSectors;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = centerX - 12;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // 绘制扇区
-    for (let i = 0; i < numSectors; i++) {
-        const angle = i * arc - Math.PI / 2;
-        ctx.beginPath();
-        ctx.moveTo(centerX, centerY);
-        ctx.arc(centerX, centerY, radius, angle, angle + arc);
-        ctx.closePath();
-        ctx.fillStyle = sectors[i].color;
-        ctx.fill();
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-        ctx.stroke();
+            // 绘制扇区
+            for (let i = 0; i < numSectors; i++) {
+                const angle = i * arc - Math.PI / 2;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, angle, angle + arc);
+                ctx.closePath();
+                ctx.fillStyle = sectors[i].color;
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.stroke();
 
-        ctx.save();
-        ctx.translate(centerX, centerY);
-        ctx.rotate(angle + arc / 2);
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillStyle = sectors[i].textColor;
-        ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-        ctx.fillText(sectors[i].text, radius - 25, 0);
-        ctx.restore();
-    }
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(angle + arc / 2);
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = sectors[i].textColor;
+                ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                ctx.fillText(sectors[i].text, radius - 25, 0);
+                ctx.restore();
+            }
 
-    // 中心装饰圈
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, 35, 0, Math.PI * 2);
-    ctx.fillStyle = '#141414';
-    ctx.fill();
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = '#ff5e00';
-    ctx.stroke();
-
-    // 固定的 SP2S 文字 (不随转盘旋转)
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold italic 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('SP2S', centerX, centerY);
-}
             // Central matte black caps and golden/orange metal accents
             ctx.beginPath();
             ctx.arc(centerX, centerY, 45, 0, Math.PI * 2);
@@ -896,23 +873,17 @@
             const resultPrize = calculatePrizeDraw();
             
             // Find appropriate Canvas angle offset for the determined sector
-            let targetSectorIndex = 1; // Default to "Try Again"
+            let targetSectorIndex = 0;
             if (resultPrize.id === 'prize1') targetSectorIndex = 0;
-            else if (resultPrize.id === 'prize3') targetSectorIndex = 2;
-            else if (resultPrize.id === 'prize2') targetSectorIndex = 4;
-            else if (resultPrize.id === 'prize4') targetSectorIndex = 6;
-            else if (resultPrize.id === 'prize5') targetSectorIndex = 7;
-            else {
-                // If tryagain, distribute between sectors 1, 3, and 5 for physics variation
-                const alternatives = [1, 3, 5];
-                targetSectorIndex = alternatives[Math.floor(Math.random() * alternatives.length)];
-            }
+            else if (resultPrize.id === 'prize3') targetSectorIndex = 1;
+            else if (resultPrize.id === 'prize2') targetSectorIndex = 2;
+            else if (resultPrize.id === 'prize4') targetSectorIndex = 3;
+            else if (resultPrize.id === 'prize5') targetSectorIndex = 4;
 
-            // Physics calculation: sector occupies 45 degrees.
-            // Center of target sector index lies at: (targetSectorIndex * 45 + 22.5) degrees.
-            // The top arrow is at 12 o'clock. Since Canvas 0 is 12 o'clock, to align a target segment
-            // we must turn the wheel CLOCKWISE by (360 - center_angle) degrees.
-            const targetSectorCenterDegrees = targetSectorIndex * 45 + 22.5;
+            // Physics calculation for dynamic wheel sizing:
+            const numSectors = sectors.length;
+            const sectorDegrees = 360 / numSectors;
+            const targetSectorCenterDegrees = targetSectorIndex * sectorDegrees + (sectorDegrees / 2);
             const alignAngle = 360 - targetSectorCenterDegrees;
 
             // Generate spinning parameters (6 full rotations minimum + align angle)
@@ -933,24 +904,20 @@
                 validCodes.splice(codeIndex, 1);
                 localStorage.setItem('sp2s_valid_codes', JSON.stringify(validCodes));
 
-                // Process prize winner registration & quota deduction
-                let finalAwardText = "Better Luck Next Time";
-                if (resultPrize.id !== 'tryagain') {
-                    // Quota deduction
-                    quotas[resultPrize.id]--;
-                    localStorage.setItem('sp2s_quotas', JSON.stringify(quotas));
+                // Quota deduction
+                quotas[resultPrize.id]--;
+                localStorage.setItem('sp2s_quotas', JSON.stringify(quotas));
 
-                    // Construct formatted text
-                    finalAwardText = `${sectors[targetSectorIndex].text}: ${sectors[targetSectorIndex].detail}`;
+                // Construct formatted text
+                const finalAwardText = `${sectors[targetSectorIndex].text}: ${sectors[targetSectorIndex].detail}`;
 
-                    // Register to persistent winner history table
-                    drawHistory.push({
-                        code: inputVal,
-                        prize: finalAwardText,
-                        time: getRelativeTimeString(0)
-                    });
-                    localStorage.setItem('sp2s_draw_history', JSON.stringify(drawHistory));
-                }
+                // Register to persistent winner history table
+                drawHistory.push({
+                    code: inputVal,
+                    prize: finalAwardText,
+                    time: getRelativeTimeString(0)
+                });
+                localStorage.setItem('sp2s_draw_history', JSON.stringify(drawHistory));
 
                 // Update templates
                 renderWinnersTable();
@@ -968,33 +935,29 @@
         }
 
         // Calculates prize draw accurately based on requested probabilities
-        // 1st Prize win rate < 1% (designed: 0.5%)
         function calculatePrizeDraw() {
-            const roll = Math.random() * 100; // Float 0.0 - 100.0
+            // Get available prizes (with quota > 0)
+            const availablePrizes = [];
+            if (quotas.prize1 > 0) availablePrizes.push({ id: 'prize1', name: '1st Prize', value: 'Rp 1.00 Million Cash', weight: 0.5 });
+            if (quotas.prize2 > 0) availablePrizes.push({ id: 'prize2', name: '2nd Prize', value: 'Rp 750 Thousand Cash', weight: 1.5 });
+            if (quotas.prize3 > 0) availablePrizes.push({ id: 'prize3', name: '3rd Prize', value: 'SEN X Device + 1 Pod', weight: 3.5 });
+            if (quotas.prize4 > 0) availablePrizes.push({ id: 'prize4', name: '4th Prize', value: '3 Pods Pack', weight: 5.5 });
+            if (quotas.prize5 > 0) availablePrizes.push({ id: 'prize5', name: '5th Prize', value: 'SP2S Exclusive Merchandise', weight: 10.0 });
 
-            // 1st Prize: 0.5% (Very tight)
-            if (roll < 0.5) {
-                if (quotas.prize1 > 0) return { id: 'prize1', name: '1st Prize', value: 'Rp 1.00 Million Cash' };
-            }
-            // 2nd Prize: 1.5%
-            else if (roll < 2.0) {
-                if (quotas.prize2 > 0) return { id: 'prize2', name: '2nd Prize', value: 'Rp 750 Thousand Cash' };
-            }
-            // 3rd Prize: 3.5%
-            else if (roll < 5.5) {
-                if (quotas.prize3 > 0) return { id: 'prize3', name: '3rd Prize', value: 'SEN X Device + 1 Pod' };
-            }
-            // 4th Prize: 5.5%
-            else if (roll < 11.0) {
-                if (quotas.prize4 > 0) return { id: 'prize4', name: '4th Prize', value: '3 Pods Pack' };
-            }
-            // 5th Prize: 10.0%
-            else if (roll < 21.0) {
-                if (quotas.prize5 > 0) return { id: 'prize5', name: '5th Prize', value: 'SP2S Exclusive Merchandise' };
+            if (availablePrizes.length === 0) {
+                // If all quotas are 0, fall back to prize5
+                return { id: 'prize5', name: '5th Prize', value: 'SP2S Exclusive Merchandise' };
             }
 
-            // Try Again: Remaining 79% (or fallback when quotas are empty)
-            return { id: 'tryagain', name: 'Better Luck Next Time', value: 'Try Again' };
+            const totalWeight = availablePrizes.reduce((sum, p) => sum + p.weight, 0);
+            let roll = Math.random() * totalWeight;
+            for (const p of availablePrizes) {
+                if (roll < p.weight) {
+                    return p;
+                }
+                roll -= p.weight;
+            }
+            return availablePrizes[availablePrizes.length - 1];
         }
 
         // Helper relative timestamp builder to look alive
@@ -1007,17 +970,10 @@
         function triggerModal(resultPrize, sectorIndex) {
             const sectorData = sectors[sectorIndex];
             
-            if (sectorData.isPrize) {
-                modalTitle.textContent = "🏆 Congratulations! 🏆";
-                modalPrizeDesc.textContent = `You won the ${sectorData.text}`;
-                modalPrize.textContent = sectorData.detail;
-                modalPrize.style.color = "var(--brand-orange)";
-            } else {
-                modalTitle.textContent = "🍀 Try Again! 🍀";
-                modalPrizeDesc.textContent = "Thank you for participating";
-                modalPrize.textContent = "Better Luck Next Time";
-                modalPrize.style.color = "#8e8e93";
-            }
+            modalTitle.textContent = "🏆 Congratulations! 🏆";
+            modalPrizeDesc.textContent = `You won the ${sectorData.text}`;
+            modalPrize.textContent = sectorData.detail;
+            modalPrize.style.color = "var(--brand-orange)";
 
             modalOverlay.classList.add('active');
         }
