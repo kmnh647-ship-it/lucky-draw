@@ -511,18 +511,27 @@
 }
         /* 移动端手机与表格专项适配 */
 @media (max-width: 550px) {
-    body { padding: 15px 10px !important; }
-    .container { padding: 15px !important; }
-    .wheel-outer { width: 260px !important; height: 260px !important; }
-    .info-section { grid-template-columns: 1fr !important; margin-top: 15px !important; }
-    .pointer { transform: translate(-50%, -60%) scale(0.85) !important; }
-    h1 { font-size: 1.5rem !important; }
-    .brand-logo { font-size: 1.8rem !important; }
+    /* 强制限制整体宽度，防止溢出 */
+    body { width: 100vw; overflow-x: hidden; padding: 10px !important; }
+    .container { width: 95% !important; margin: 0 auto !important; padding: 10px !important; }
     
-    .info-card { padding: 15px 10px !important; }
-    .info-card h3 { font-size: 0.95rem !important; }
-    .winners-table th, .winners-table td { padding: 8px 4px !important; font-size: 0.75rem !important; }
-    .winners-table th { font-size: 0.65rem !important; letter-spacing: 0 !important; }
+    /* 缩小转盘区域 */
+    .wheel-outer { width: 240px !important; height: 240px !important; }
+    
+    /* 表格容器溢出处理 */
+    .info-card { 
+        width: 100% !important; 
+        padding: 10px 5px !important; 
+        overflow-x: hidden !important; 
+    }
+    
+    /* 调整表格字体，确保三列能挤进屏幕 */
+    .winners-table { width: 100% !important; table-layout: fixed; }
+    .winners-table th, .winners-table td { 
+        padding: 6px 2px !important; 
+        font-size: 11px !important; 
+        word-break: break-all; 
+    }
 }
     </style>
 </head>
