@@ -19,11 +19,11 @@
         }
 
         * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
         
         body {
             background-color: var(--bg-black);
@@ -639,15 +639,15 @@
         // Symmetric 8-sector wheel layout designed for SP2S premium colors
         // Arranged in an alternating design to build drama and visually balance the wheel
         const sectors = [
-            { id: 'prize1', text: '1st Prize', detail: 'Rp 1.00 Million', color: '#ff5e00', textColor: '#ffffff', isPrize: true },  // Sector 0
-            { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false }, // Sector 1
-            { id: 'prize3', text: '3rd Prize', detail: 'SEN X Kit + 1 Pod', color: '#161616', textColor: '#ff5e00', isPrize: true },  // Sector 2
-            { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false }, // Sector 3
-            { id: 'prize2', text: '2nd Prize', detail: 'Rp 750 Thousand', color: '#ff5e00', textColor: '#ffffff', isPrize: true },   // Sector 4
-            { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false }, // Sector 5
-            { id: 'prize4', text: '4th Prize', detail: '3 Pods Pack', color: '#161616', textColor: '#ff5e00', isPrize: true },       // Sector 6
-            { id: 'prize5', text: '5th Prize', detail: 'SP2S Merchandise', color: '#222222', textColor: '#ffffff', isPrize: true }    // Sector 7
-        ];
+    { id: 'prize1', text: '1st Prize', detail: 'Rp 1.00 Million Cash', color: '#ff5e00', textColor: '#ffffff', isPrize: true },
+    { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false },
+    { id: 'prize3', text: '3rd Prize', detail: 'SEN X Device + 1 Pod', color: '#161616', textColor: '#ff5e00', isPrize: true },
+    { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false },
+    { id: 'prize2', text: '2nd Prize', detail: 'Rp 750 Thousand Cash', color: '#ff5e00', textColor: '#ffffff', isPrize: true },
+    { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false },
+    { id: 'prize4', text: '4th Prize', detail: '3 Pods Pack', color: '#161616', textColor: '#ff5e00', isPrize: true },
+    { id: 'prize5', text: '5th Prize', detail: 'SP2S Exclusive Merchandise', color: '#222222', textColor: '#ffffff', isPrize: true }
+];
 
         // 3. UI Element references
         const canvas = document.getElementById('wheelCanvas');
@@ -723,59 +723,53 @@
 
         // Draw the wheel using Canvas API with premium styling elements
         function drawWheel() {
-            const numSectors = sectors.length;
-            const arc = Math.PI * 2 / numSectors; // 45 degrees
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const radius = centerX - 12;
+    const numSectors = sectors.length;
+    const arc = Math.PI * 2 / numSectors;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = centerX - 12;
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw sectors
-            for (let i = 0; i < numSectors; i++) {
-                // Adjust by -Math.PI / 2 so index 0 points directly top (12 o'clock)
-                const angle = i * arc - Math.PI / 2;
-                
-                ctx.beginPath();
-                ctx.moveTo(centerX, centerY);
-                ctx.arc(centerX, centerY, radius, angle, angle + arc);
-                ctx.closePath();
-                
-                // Color fill
-                ctx.fillStyle = sectors[i].color;
-                ctx.fill();
+    // 绘制扇区
+    for (let i = 0; i < numSectors; i++) {
+        const angle = i * arc - Math.PI / 2;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, angle, angle + arc);
+        ctx.closePath();
+        ctx.fillStyle = sectors[i].color;
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.stroke();
 
-                // Distinct futuristic segment dividers
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = '#111111';
-                ctx.stroke();
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(angle + arc / 2);
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = sectors[i].textColor;
+        ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillText(sectors[i].text, radius - 25, 0);
+        ctx.restore();
+    }
 
-                // Draw sector labels
-                ctx.save();
-                ctx.translate(centerX, centerY);
-                ctx.rotate(angle + arc / 2);
-                ctx.textAlign = 'right';
-                ctx.textBaseline = 'middle';
-                ctx.fillStyle = sectors[i].textColor;
-                
-                // Drop shadow on text for depth
-                ctx.shadowColor = 'rgba(0,0,0,0.8)';
-                ctx.shadowBlur = 4;
-                ctx.shadowOffsetX = 1;
-                ctx.shadowOffsetY = 1;
+    // 中心装饰圈
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 35, 0, Math.PI * 2);
+    ctx.fillStyle = '#141414';
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#ff5e00';
+    ctx.stroke();
 
-                // Sector text formatting
-                ctx.font = 'bold 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-                ctx.fillText(sectors[i].text, radius - 20, -6);
-
-                // Small sub-text detailing the actual prize
-                ctx.font = '700 8px -apple-system, BlinkMacSystemFont, sans-serif';
-                ctx.fillStyle = sectors[i].isPrize ? '#ffffff' : '#55555c';
-                ctx.fillText(sectors[i].isPrize ? 'WIN' : 'TRY', radius - 20, 6);
-
-                ctx.restore();
-            }
-
+    // 固定的 SP2S 文字 (不随转盘旋转)
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold italic 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('SP2S', centerX, centerY);
+}
             // Central matte black caps and golden/orange metal accents
             ctx.beginPath();
             ctx.arc(centerX, centerY, 45, 0, Math.PI * 2);
