@@ -747,8 +747,15 @@
                 ctx.textAlign = 'right';
                 ctx.textBaseline = 'middle';
                 ctx.fillStyle = sectors[i].textColor;
-                ctx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-                ctx.fillText(sectors[i].text, radius - 25, 0);
+                
+                // Dynamically adjust font size and text padding to prevent overlap with central circle (radius 45px)
+                const isLongText = sectors[i].text.length > 12;
+                ctx.font = isLongText 
+                    ? 'bold 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+                    : 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                
+                const textPadding = isLongText ? 15 : 25;
+                ctx.fillText(sectors[i].text, radius - textPadding, 0);
                 ctx.restore();
             }
 
@@ -839,8 +846,7 @@
                 🥈 2nd: [${quotas.prize2}] | 
                 🥉 3rd: [${quotas.prize3}] | 
                 4️⃣ 4th: [${quotas.prize4}] | 
-                5️⃣ 5th: [${quotas.prize5}]
-            `;
+                5️⃣ 5th: [${quotas.prize5}]\n            `;
         }
 
         // Secure code masking utility (leaves sp... and the end character visible)
