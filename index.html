@@ -640,13 +640,10 @@
         // Arranged in an alternating design to build drama and visually balance the wheel
         const sectors = [
     { id: 'prize1', text: '1st Prize', detail: 'Rp 1.00 Million Cash', color: '#ff5e00', textColor: '#ffffff', isPrize: true },
-    { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false },
     { id: 'prize3', text: '3rd Prize', detail: 'SEN X Device + 1 Pod', color: '#161616', textColor: '#ff5e00', isPrize: true },
-    { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false },
     { id: 'prize2', text: '2nd Prize', detail: 'Rp 750 Thousand Cash', color: '#ff5e00', textColor: '#ffffff', isPrize: true },
-    { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false },
     { id: 'prize4', text: '4th Prize', detail: '3 Pods Pack', color: '#161616', textColor: '#ff5e00', isPrize: true },
-    { id: 'prize5', text: '5th Prize', detail: 'SP2S Exclusive Merchandise', color: '#222222', textColor: '#ffffff', isPrize: true }
+    { id: 'prize5', text: '5th Prize', detail: 'SP2S Merchandise', color: '#222222', textColor: '#ffffff', isPrize: true }
 ];
 
         // 3. UI Element references
@@ -868,53 +865,41 @@
         }
 
         // 5. Draw Trigger Core Control Logic
-        function triggerDraw() {
-            if (isSpinning) return;
+        // 5. Draw Trigger Core Control Logic
+function triggerDraw() {
+    if (isSpinning) return;
+    const inputVal = codeInput.value.trim();
+    errorMsg.textContent = '';
 
-            const inputVal = codeInput.value.trim();
-            errorMsg.textContent = '';
+    // Verification Stage 1: Empty checks
+    if (!inputVal) {
+        errorMsg.textContent = 'Please enter a valid draw code.';
+        return;
+    }
 
-            // Verification Stage 1: Empty checks
-            if (!inputVal) {
-                errorMsg.textContent = 'Please enter a valid draw code.';
-                return;
-            }
+    // Verification Stage 2: Code validity in current pool
+    const codeIndex = validCodes.indexOf(inputVal);
+    if (codeIndex === -1) {
+        errorMsg.textContent = 'Invalid promo code or already used!';
+        return;
+    }
 
-            // Verification Stage 2: Code validity in current pool
-            const codeIndex = validCodes.indexOf(inputVal);
-            if (codeIndex === -1) {
-                errorMsg.textContent = 'Invalid promo code or already used!';
-                return;
-            }
+    // --- 关键修改：从有效池中移除该码 ---
+    validCodes.splice(codeIndex, 1);
+    // 强制刷新界面上的剩余抽奖码显示（如果你的代码中有 renderCodes 函数）
+    if (typeof renderCodes === 'function') renderCodes();
+    // ----------------------------------
 
-            // Lock inputs to prevent double-submit or refresh abuse
-            isSpinning = true;
-            drawBtn.disabled = true;
-            codeInput.disabled = true;
+    // Lock inputs to prevent double-submit or refresh abuse
+    isSpinning = true;
+    drawBtn.disabled = true;
+    codeInput.disabled = true;
 
-            // Roll prize category based on scientific probability calculations
-            const resultPrize = calculatePrizeDraw();
-            
-            // Find appropriate Canvas angle offset for the determined sector
-            let targetSectorIndex = 1; // Default to "Try Again"
-            if (resultPrize.id === 'prize1') targetSectorIndex = 0;
-            else if (resultPrize.id === 'prize3') targetSectorIndex = 2;
-            else if (resultPrize.id === 'prize2') targetSectorIndex = 4;
-            else if (resultPrize.id === 'prize4') targetSectorIndex = 6;
-            else if (resultPrize.id === 'prize5') targetSectorIndex = 7;
-            else {
-                // If tryagain, distribute between sectors 1, 3, and 5 for physics variation
-                const alternatives = [1, 3, 5];
-                targetSectorIndex = alternatives[Math.floor(Math.random() * alternatives.length)];
-            }
-
-            // Physics calculation: sector occupies 45 degrees.
-            // Center of target sector index lies at: (targetSectorIndex * 45 + 22.5) degrees.
-            // The top arrow is at 12 o'clock. Since Canvas 0 is 12 o'clock, to align a target segment
-            // we must turn the wheel CLOCKWISE by (360 - center_angle) degrees.
-            const targetSectorCenterDegrees = targetSectorIndex * 45 + 22.5;
-            const alignAngle = 360 - targetSectorCenterDegrees;
-
+    // Roll prize category based on scientific probability calculations
+    const resultPrize = calculatePrizeDraw();
+    
+    // ... (保持你原本的后续动画和旋转逻辑不变) ...
+}
             // Generate spinning parameters (6 full rotations minimum + align angle)
             const minSpins = 6;
             const currentSpins = Math.floor(currentRotation / 360);
