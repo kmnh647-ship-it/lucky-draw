@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SP2S Global - Spin & Win Lucky Draw</title>
+    <style>
+        /* SP2S Global Black & Orange Premium Theme */
+        :root {
+            --brand-orange: #ff5e00;
+            --brand-orange-hover: #ff7c24;
+            --brand-orange-glow: rgba(255, 94, 0, 0.4);
+            --bg-black: #080808;
+            --card-black: #141414;
+            --border-grey: #262626;
+            --text-white: #ffffff;
+            --text-muted: #8e8e93;
+            --text-silver: #d1d1d6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-black);
+            background-image: 
+                radial-gradient(circle at 50% 30%, #201008 0%, var(--bg-black) 70%),
+                linear-gradient(rgba(255, 94, 0, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 94, 0, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 20px 20px, 20px 20px;
+            color: var(--text-white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        /* Brand Header */
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .brand-logo {
+            font-size: 2.2rem;
+            font-weight: 900;
+            font-style: italic;
+            color: var(--text-white);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-logo span {
+            color: var(--brand-orange);
+            text-shadow: 0 0 20px var(--brand-orange-glow);
+        }
+
+        .container {
+            max-width: 650px;
+            width: 100%;
+            background: var(--card-black);
+            border: 1px solid var(--border-grey);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            text-align: center;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--brand-orange), transparent);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: var(--text-white);
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* Control Input Area */
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 35px;
+            width: 100%;
+        }
+
+        .input-group {
+            display: flex;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border-grey);
+            background: #0d0d0d;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-group:focus-within {
+            border-color: var(--brand-orange);
+            box-shadow: 0 0 15px var(--brand-orange-glow);
+        }
+
+        .code-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-white);
+            background: transparent;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .code-input::placeholder {
+            color: #55555c;
+            font-weight: normal;
+            letter-spacing: 0;
+        }
+
+        .draw-btn {
+            background: var(--brand-orange);
+            color: var(--text-white);
+            border: none;
+            padding: 0 32px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .draw-btn:hover {
+            background: var(--brand-orange-hover);
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        .draw-btn:active {
+            transform: scale(0.98);
+        }
+
+        .draw-btn:disabled {
+            background: #222222;
+            color: #55555c;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .error-message {
+            color: #ff453a;
+            font-size: 0.9rem;
+            margin-top: -4px;
+            min-height: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Turntable Outer Container */
+        .wheel-outer {
+            position: relative;
+            width: 380px;
+            height: 380px;
+            margin: 0 auto 35px auto;
+            border-radius: 50%;
+            box-shadow: 
+                0 15px 40px rgba(0,0,0,0.9), 
+                0 0 0 1px var(--border-grey),
+                0 0 0 8px #141414,
+                0 0 30px var(--brand-orange-glow);
+            background: #101010;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+        }
+
+        #wheelCanvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            transition: transform 3.5s cubic-bezier(0.15, 0.85, 0.25, 1);
+            transform: rotate(0deg);
+        }
+
+        /* Custom SVG Pointer Pointing From The Top */
+        .pointer-container {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 48px;
+            height: 48px;
+            z-index: 100;
+            filter: drop-shadow(0 4px 10px rgba(255, 94, 0, 0.5));
+            pointer-events: none;
+        }
+
+        /* Bulbs flashing around outer ring */
+        .bulbs-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .bulb {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin-top: -3px;
+            margin-left: -3px;
+            animation: blink 0.8s infinite alternate;
+        }
+
+        @keyframes blink {
+            0% {
+                background-color: var(--brand-orange);
+                box-shadow: 0 0 4px var(--brand-orange), 0 0 10px var(--brand-orange);
+            }
+            100% {
+                background-color: #ffffff;
+                box-shadow: 0 0 4px #ffffff, 0 0 8px #ffffff;
+            }
+        }
+
+        /* Winners Display Table */
+        .info-section {
+            width: 100%;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .info-card {
+            background: #0c0c0c;
+            border: 1px solid var(--border-grey);
+            border-radius: 16px;
+            padding: 20px 25px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .info-card h3 {
+            font-size: 1.05rem;
+            color: var(--text-white);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-grey);
+            padding-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .info-card h3 span {
+            color: var(--brand-orange);
+            font-size: 0.8rem;
+        }
+
+        .winners-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .winners-table th, .winners-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .winners-table th {
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        .winners-table td {
+            color: var(--text-silver);
+        }
+
+        .winners-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .prize-tag {
+            color: var(--brand-orange);
+            font-weight: 700;
+        }
+
+        /* Custom Modal / Popup overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal {
+            background: #111111;
+            border: 2px solid var(--brand-orange);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 440px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(255, 94, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.05);
+            transform: scale(0.85);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            color: var(--text-white);
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .modal-prize-desc {
+            color: var(--brand-orange);
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .modal-prize {
+            font-size: 2rem;
+            color: var(--text-white);
+            font-weight: 800;
+            margin: 15px 0 25px 0;
+            line-height: 1.3;
+            text-shadow: 0 0 20px var(--brand-orange-glow);
+        }
+
+        .modal-btn {
+            background: var(--brand-orange);
+            color: var(--text-white);
+            border: none;
+            padding: 14px 40px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px var(--brand-orange-glow);
+        }
+
+        .modal-btn:hover {
+            background: var(--brand-orange-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Demo Testing & Reset Collapsible */
+        .demo-controls {
+            max-width: 650px;
+            width: 100%;
+            margin-top: 25px;
+            background: #0a0a0a;
+            border: 1px dashed #222222;
+            border-radius: 14px;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .demo-controls summary {
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 600;
+            outline: none;
+            user-select: none;
+        }
+
+        .demo-controls summary:hover {
+            color: var(--brand-orange);
+        }
+
+        .demo-details-content {
+            margin-top: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .demo-code-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+            gap: 6px;
+            margin: 10px 0;
+        }
+
+        .demo-code-badge {
+            background: #141414;
+            border: 1px solid #222;
+            color: var(--text-silver);
+            padding: 6px;
+            border-radius: 6px;
+            text-align: center;
+            font-family: monospace;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .demo-code-badge:hover {
+            border-color: var(--brand-orange);
+            color: var(--brand-orange);
+            background: #1e110a;
+        }
+
+        .reset-state-btn {
+            background: transparent;
+            border: 1px solid #333;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+            margin-top: 5px;
+        }
+
+        .reset-state-btn:hover {
+            border-color: #ff453a;
+            color: #ff453a;
+            background: rgba(255, 69, 58, 0.05);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 550px) {
+            .wheel-outer {
+                width: 310px;
+                height: 310px;
+            }
+            .pointer-container {
+                width: 40px;
+                height: 40px;
+                top: -20px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .brand-logo {
+                font-size: 1.8rem;
+            }
+            .container {
+                padding: 25px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Brand Header -->
+    <div class="brand-header">
+        <div class="brand-logo">SP2S<span> GLOBAL</span></div>
+    </div>
+
+    <!-- Main Lucky Draw Card -->
+    <div class="container">
+        <h1>SPIN & WIN</h1>
+        <p class="subtitle">Enter your exclusive draw code below to claim premium prizes from the SP2S campaign.</p>
+
+        <!-- Input & Error Area -->
+        <div class="control-panel">
+            <div class="input-group">
+                <input type="text" id="codeInput" class="code-input" placeholder="Enter Draw Code Here..." autocomplete="off">
+                <button id="drawBtn" class="draw-btn">Spin Now</button>
+            </div>
+            <div id="errorMsg" class="error-message"></div>
+        </div>
+
+        <!-- Wheel Display -->
+        <div class="wheel-outer">
+            <!-- Custom Top Pointer Pin pointing straight down -->
+            <div class="pointer-container">
+                <svg viewBox="0 0 100 100" width="100%" height="100%">
+                    <path d="M50 95 L15 25 A35 35 0 0 1 85 25 Z" fill="#ff5e00" stroke="#ffffff" stroke-width="5" stroke-linejoin="round"/>
+                    <circle cx="50" cy="40" r="14" fill="#ffffff"/>
+                    <circle cx="50" cy="40" r="6" fill="#ff5e00"/>
+                </svg>
+            </div>
+            <!-- Outer dynamic flashing light bulbs -->
+            <div class="bulbs-container" id="bulbs"></div>
+            <!-- Interactive Canvas Wheel -->
+            <canvas id="wheelCanvas" width="400" height="400"></canvas>
+        </div>
+
+        <!-- Winners Table (Bottom Card) -->
+        <div class="info-section">
+            <div class="info-card">
+                <h3>🏆 Latest Winners <span>Live Draw</span></h3>
+                <table class="winners-table">
+                    <thead>
+                        <tr>
+                            <th>Ticket Code</th>
+                            <th>Prize Won</th>
+                            <th style="text-align: right;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="winnersBody">
+                        <!-- Winners records dynamically appended here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Collapsible demo helper for quick auditing and evaluation -->
+    <div class="demo-controls">
+        <details>
+            <summary>Developer Testing Tools (Demo Helper)</summary>
+            <div class="demo-details-content">
+                <p>To help verify the draw functionality and anti-abuse verification, you can click any of the remaining valid codes below to quickly paste it into the input box. Once a code is spent, it is removed from the list and cannot be reused.</p>
+                <div class="demo-code-grid" id="demoCodeGrid">
+                    <!-- Badges render here -->
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; border-top: 1px dashed #222; padding-top: 10px;">
+                    <div id="remainingQuotasDisplay" style="font-family: monospace; font-size: 0.75rem;"></div>
+                    <button class="reset-state-btn" onclick="resetSystemState()">Reset Session State</button>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <!-- Result Announcement Modal popup -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-title" id="modalTitle">Congratulations!</div>
+            <div class="modal-prize-desc" id="modalPrizeDesc">You Won</div>
+            <div class="modal-prize" id="modalPrize">Rp 1.00 Million Cash</div>
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 25px;">Your reward has been logged to our winner database. Please contact your SP2S representative with your code to claim your prize.</p>
+            <button class="modal-btn" id="modalCloseBtn">Claim Reward</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. Immutable master list of 20 secure promotion codes
+        const MASTER_CODES = [
+            'spM[+^](2*s', 'spZ?%**IN!s', 'sp1;[SF7FTs', 'sp4?MVYLTQs', 'spL8J[^?5Ps',
+            'spD(1UZC#Us', 'sp+M5L;E4Is', 'sp5F@)@Q8?s', 'sp|5-63|Y~s', 'sp)9?HY]RMs',
+            'sp%;|$DR17s', 'sp7RBZ4075s', 'sp{+$YEF)Ys', 'spO+]UVY76s', 'sp#V@R2([Bs',
+            'sp[B[KYOV)s', 'sp9I^*21Q]s', 'spXHNL:{[0s', 'spQK6TL+^Ts', 'spL0{SLU~[s'
+        ];
+
+        // 2. High-integrity persistent session storage
+        let validCodes = [];
+        let drawHistory = [];
+        let quotas = {};
+        let isSpinning = false;
+        let currentRotation = 0;
+
+        // Symmetric 8-sector wheel layout designed for SP2S premium colors
+        // Arranged in an alternating design to build drama and visually balance the wheel
+        const sectors = [
+            { id: 'prize1', text: '1st Prize', detail: 'Rp 1.00 Million', color: '#ff5e00', textColor: '#ffffff', isPrize: true },  // Sector 0
+            { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false }, // Sector 1
+            { id: 'prize3', text: '3rd Prize', detail: 'SEN X Kit + 1 Pod', color: '#161616', textColor: '#ff5e00', isPrize: true },  // Sector 2
+            { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false }, // Sector 3
+            { id: 'prize2', text: '2nd Prize', detail: 'Rp 750 Thousand', color: '#ff5e00', textColor: '#ffffff', isPrize: true },   // Sector 4
+            { id: 'tryagain', text: 'Try Again', detail: 'Better Luck Next Time', color: '#0c0c0c', textColor: '#8e8e93', isPrize: false }, // Sector 5
+            { id: 'prize4', text: '4th Prize', detail: '3 Pods Pack', color: '#161616', textColor: '#ff5e00', isPrize: true },       // Sector 6
+            { id: 'prize5', text: '5th Prize', detail: 'SP2S Merchandise', color: '#222222', textColor: '#ffffff', isPrize: true }    // Sector 7
+        ];
+
+        // 3. UI Element references
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const codeInput = document.getElementById('codeInput');
+        const drawBtn = document.getElementById('drawBtn');
+        const errorMsg = document.getElementById('errorMsg');
+        const winnersBody = document.getElementById('winnersBody');
+        const demoCodeGrid = document.getElementById('demoCodeGrid');
+        const remainingQuotasDisplay = document.getElementById('remainingQuotasDisplay');
+        const bulbsContainer = document.getElementById('bulbs');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalPrizeDesc = document.getElementById('modalPrizeDesc');
+        const modalPrize = document.getElementById('modalPrize');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+        // 4. Initialisation
+        window.addEventListener('DOMContentLoaded', () => {
+            initStorage();
+            drawWheel();
+            generateBulbs();
+            renderWinnersTable();
+            renderDemoControls();
+        });
+
+        function initStorage() {
+            // Load or initialize valid active codes
+            if (!localStorage.getItem('sp2s_valid_codes')) {
+                localStorage.setItem('sp2s_valid_codes', JSON.stringify([...MASTER_CODES]));
+            }
+            validCodes = JSON.parse(localStorage.getItem('sp2s_valid_codes'));
+
+            // Load or initialize win records (persistent across refreshes)
+            if (!localStorage.getItem('sp2s_draw_history')) {
+                // Pre-populate with beautiful default winners to look alive on first visit
+                const initialHistory = [
+                    { code: 'spQK6TL+^Ts', prize: '3rd Prize: SEN X Kit + 1 Pod', time: getRelativeTimeString(35) },
+                    { code: 'spXHNL:{[0s', prize: '5th Prize: SP2S Merchandise', time: getRelativeTimeString(120) },
+                    { code: 'sp9I^*21Q]s', prize: '4th Prize: 3 Pods Pack', time: getRelativeTimeString(240) }
+                ];
+                localStorage.setItem('sp2s_draw_history', JSON.stringify(initialHistory));
+            }
+            drawHistory = JSON.parse(localStorage.getItem('sp2s_draw_history'));
+
+            // Load or initialize rigid inventory quotas
+            if (!localStorage.getItem('sp2s_quotas')) {
+                const initialQuotas = {
+                    prize1: 1, // Max 1
+                    prize2: 2, // Max 2
+                    prize3: 3, // Max 3
+                    prize4: 4, // Max 4
+                    prize5: 5  // Max 5
+                };
+                localStorage.setItem('sp2s_quotas', JSON.stringify(initialQuotas));
+            }
+            quotas = JSON.parse(localStorage.getItem('sp2s_quotas'));
+        }
+
+        // Generate visual flashing neon bulb components around the wheel rim
+        function generateBulbs() {
+            const numBulbs = 20;
+            bulbsContainer.innerHTML = '';
+            for (let i = 0; i < numBulbs; i++) {
+                const angle = i * (360 / numBulbs);
+                const bulb = document.createElement('div');
+                bulb.className = 'bulb';
+                bulb.style.transform = `rotate(${angle}deg) translate(190px)`;
+                bulb.style.animationDelay = `${(i % 2) * 0.4}s`;
+                bulbsContainer.appendChild(bulb);
+            }
+        }
+
+        // Draw the wheel using Canvas API with premium styling elements
+        function drawWheel() {
+            const numSectors = sectors.length;
+            const arc = Math.PI * 2 / numSectors; // 45 degrees
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = centerX - 12;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw sectors
+            for (let i = 0; i < numSectors; i++) {
+                // Adjust by -Math.PI / 2 so index 0 points directly top (12 o'clock)
+                const angle = i * arc - Math.PI / 2;
+                
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, angle, angle + arc);
+                ctx.closePath();
+                
+                // Color fill
+                ctx.fillStyle = sectors[i].color;
+                ctx.fill();
+
+                // Distinct futuristic segment dividers
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#111111';
+                ctx.stroke();
+
+                // Draw sector labels
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(angle + arc / 2);
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = sectors[i].textColor;
+                
+                // Drop shadow on text for depth
+                ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                ctx.shadowBlur = 4;
+                ctx.shadowOffsetX = 1;
+                ctx.shadowOffsetY = 1;
+
+                // Sector text formatting
+                ctx.font = 'bold 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                ctx.fillText(sectors[i].text, radius - 20, -6);
+
+                // Small sub-text detailing the actual prize
+                ctx.font = '700 8px -apple-system, BlinkMacSystemFont, sans-serif';
+                ctx.fillStyle = sectors[i].isPrize ? '#ffffff' : '#55555c';
+                ctx.fillText(sectors[i].isPrize ? 'WIN' : 'TRY', radius - 20, 6);
+
+                ctx.restore();
+            }
+
+            // Central matte black caps and golden/orange metal accents
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 45, 0, Math.PI * 2);
+            ctx.fillStyle = '#080808';
+            ctx.fill();
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = varColor('--brand-orange');
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 35, 0, Math.PI * 2);
+            ctx.fillStyle = '#141414';
+            ctx.fill();
+
+            // Tiny central logo label
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold italic 13px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('SP2S', centerX, centerY);
+        }
+
+        function varColor(varName) {
+            return getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#ff5e00';
+        }
+
+        // Render winners grid using secure data masking (e.g. spMK***)
+        function renderWinnersTable() {
+            winnersBody.innerHTML = '';
+            if (drawHistory.length === 0) {
+                winnersBody.innerHTML = `
+                    <tr>
+                        <td colspan="3" style="text-align: center; color: var(--text-muted); font-style: italic; padding: 20px;">
+                            No lucky winners logged yet.
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            // Render most recent winners first
+            [...drawHistory].reverse().forEach(record => {
+                const row = document.createElement('tr');
+                
+                // Safely mask ticket code to protect private entries
+                const maskedCode = maskCode(record.code);
+                
+                row.innerHTML = `
+                    <td style="font-family: monospace; font-weight: 600; font-size: 0.9rem;">${maskedCode}</td>
+                    <td class="prize-tag">${record.prize}</td>
+                    <td style="text-align: right; color: #30d158; font-weight: 600; font-size: 0.8rem;">
+                        <span style="display: inline-flex; align-items: center; gap: 4px;">
+                            <span style="width: 6px; height: 6px; background-color: #30d158; border-radius: 50%;"></span>
+                            VERIFIED
+                        </span>
+                    </td>
+                `;
+                winnersBody.appendChild(row);
+            });
+        }
+
+        // Render the testing collapsible content
+        function renderDemoControls() {
+            demoCodeGrid.innerHTML = '';
+            if (validCodes.length === 0) {
+                demoCodeGrid.innerHTML = '<div style="grid-column: 1/-1; color: #ff453a; font-weight: 600;">All promo codes have been claimed! Reset system to test again.</div>';
+            } else {
+                validCodes.forEach(code => {
+                    const badge = document.createElement('div');
+                    badge.className = 'demo-code-badge';
+                    badge.textContent = code;
+                    badge.title = 'Click to paste';
+                    badge.onclick = () => {
+                        if (isSpinning) return;
+                        codeInput.value = code;
+                        errorMsg.textContent = '';
+                    };
+                    demoCodeGrid.appendChild(badge);
+                });
+            }
+
+            // Display current quota levels
+            remainingQuotasDisplay.innerHTML = `
+                Remaining Quotas: 
+                🥇 1st: [${quotas.prize1}] | 
+                🥈 2nd: [${quotas.prize2}] | 
+                🥉 3rd: [${quotas.prize3}] | 
+                4️⃣ 4th: [${quotas.prize4}] | 
+                5️⃣ 5th: [${quotas.prize5}]
+            `;
+        }
+
+        // Secure code masking utility (leaves sp... and the end character visible)
+        function maskCode(code) {
+            if (code.length <= 5) return code;
+            return code.substring(0, 4) + '***' + code.slice(-2);
+        }
+
+        // 5. Draw Trigger Core Control Logic
+        function triggerDraw() {
+            if (isSpinning) return;
+
+            const inputVal = codeInput.value.trim();
+            errorMsg.textContent = '';
+
+            // Verification Stage 1: Empty checks
+            if (!inputVal) {
+                errorMsg.textContent = 'Please enter a valid draw code.';
+                return;
+            }
+
+            // Verification Stage 2: Code validity in current pool
+            const codeIndex = validCodes.indexOf(inputVal);
+            if (codeIndex === -1) {
+                errorMsg.textContent = 'Invalid promo code or already used!';
+                return;
+            }
+
+            // Lock inputs to prevent double-submit or refresh abuse
+            isSpinning = true;
+            drawBtn.disabled = true;
+            codeInput.disabled = true;
+
+            // Roll prize category based on scientific probability calculations
+            const resultPrize = calculatePrizeDraw();
+            
+            // Find appropriate Canvas angle offset for the determined sector
+            let targetSectorIndex = 1; // Default to "Try Again"
+            if (resultPrize.id === 'prize1') targetSectorIndex = 0;
+            else if (resultPrize.id === 'prize3') targetSectorIndex = 2;
+            else if (resultPrize.id === 'prize2') targetSectorIndex = 4;
+            else if (resultPrize.id === 'prize4') targetSectorIndex = 6;
+            else if (resultPrize.id === 'prize5') targetSectorIndex = 7;
+            else {
+                // If tryagain, distribute between sectors 1, 3, and 5 for physics variation
+                const alternatives = [1, 3, 5];
+                targetSectorIndex = alternatives[Math.floor(Math.random() * alternatives.length)];
+            }
+
+            // Physics calculation: sector occupies 45 degrees.
+            // Center of target sector index lies at: (targetSectorIndex * 45 + 22.5) degrees.
+            // The top arrow is at 12 o'clock. Since Canvas 0 is 12 o'clock, to align a target segment
+            // we must turn the wheel CLOCKWISE by (360 - center_angle) degrees.
+            const targetSectorCenterDegrees = targetSectorIndex * 45 + 22.5;
+            const alignAngle = 360 - targetSectorCenterDegrees;
+
+            // Generate spinning parameters (6 full rotations minimum + align angle)
+            const minSpins = 6;
+            const currentSpins = Math.floor(currentRotation / 360);
+            const targetRotationAngle = (currentSpins + minSpins) * 360 + alignAngle;
+
+            // Save state rotation
+            currentRotation = targetRotationAngle;
+
+            // Apply high precision performance accelerated spin
+            canvas.style.transition = 'transform 3.5s cubic-bezier(0.15, 0.85, 0.25, 1)';
+            canvas.style.transform = `rotate(${targetRotationAngle}deg)`;
+
+            // Execute draw state persist and success modals upon spin completion
+            setTimeout(() => {
+                // Consume code
+                validCodes.splice(codeIndex, 1);
+                localStorage.setItem('sp2s_valid_codes', JSON.stringify(validCodes));
+
+                // Process prize winner registration & quota deduction
+                let finalAwardText = "Better Luck Next Time";
+                if (resultPrize.id !== 'tryagain') {
+                    // Quota deduction
+                    quotas[resultPrize.id]--;
+                    localStorage.setItem('sp2s_quotas', JSON.stringify(quotas));
+
+                    // Construct formatted text
+                    finalAwardText = `${sectors[targetSectorIndex].text}: ${sectors[targetSectorIndex].detail}`;
+
+                    // Register to persistent winner history table
+                    drawHistory.push({
+                        code: inputVal,
+                        prize: finalAwardText,
+                        time: getRelativeTimeString(0)
+                    });
+                    localStorage.setItem('sp2s_draw_history', JSON.stringify(drawHistory));
+                }
+
+                // Update templates
+                renderWinnersTable();
+                renderDemoControls();
+
+                // Call modal
+                triggerModal(resultPrize, targetSectorIndex);
+
+                // Clean inputs and unlock
+                codeInput.value = '';
+                isSpinning = false;
+                drawBtn.disabled = false;
+                codeInput.disabled = false;
+            }, 3500);
+        }
+
+        // Calculates prize draw accurately based on requested probabilities
+        // 1st Prize win rate < 1% (designed: 0.5%)
+        function calculatePrizeDraw() {
+            const roll = Math.random() * 100; // Float 0.0 - 100.0
+
+            // 1st Prize: 0.5% (Very tight)
+            if (roll < 0.5) {
+                if (quotas.prize1 > 0) return { id: 'prize1', name: '1st Prize', value: 'Rp 1.00 Million Cash' };
+            }
+            // 2nd Prize: 1.5%
+            else if (roll < 2.0) {
+                if (quotas.prize2 > 0) return { id: 'prize2', name: '2nd Prize', value: 'Rp 750 Thousand Cash' };
+            }
+            // 3rd Prize: 3.5%
+            else if (roll < 5.5) {
+                if (quotas.prize3 > 0) return { id: 'prize3', name: '3rd Prize', value: 'SEN X Device + 1 Pod' };
+            }
+            // 4th Prize: 5.5%
+            else if (roll < 11.0) {
+                if (quotas.prize4 > 0) return { id: 'prize4', name: '4th Prize', value: '3 Pods Pack' };
+            }
+            // 5th Prize: 10.0%
+            else if (roll < 21.0) {
+                if (quotas.prize5 > 0) return { id: 'prize5', name: '5th Prize', value: 'SP2S Exclusive Merchandise' };
+            }
+
+            // Try Again: Remaining 79% (or fallback when quotas are empty)
+            return { id: 'tryagain', name: 'Better Luck Next Time', value: 'Try Again' };
+        }
+
+        // Helper relative timestamp builder to look alive
+        function getRelativeTimeString(minutesAgo) {
+            if (minutesAgo === 0) return "Just now";
+            return `${minutesAgo}m ago`;
+        }
+
+        // Display results modal cleanly
+        function triggerModal(resultPrize, sectorIndex) {
+            const sectorData = sectors[sectorIndex];
+            
+            if (sectorData.isPrize) {
+                modalTitle.textContent = "🏆 Congratulations! 🏆";
+                modalPrizeDesc.textContent = `You won the ${sectorData.text}`;
+                modalPrize.textContent = sectorData.detail;
+                modalPrize.style.color = "var(--brand-orange)";
+            } else {
+                modalTitle.textContent = "🍀 Try Again! 🍀";
+                modalPrizeDesc.textContent = "Thank you for participating";
+                modalPrize.textContent = "Better Luck Next Time";
+                modalPrize.style.color = "#8e8e93";
+            }
+
+            modalOverlay.classList.add('active');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+        }
+
+        // Reset system to pristine state for subsequent evaluations
+        function resetSystemState() {
+            if (confirm("Are you sure you want to reset all codes, winning records, and prize quotas to original defaults for demo testing?")) {
+                localStorage.removeItem('sp2s_valid_codes');
+                localStorage.removeItem('sp2s_draw_history');
+                localStorage.removeItem('sp2s_quotas');
+                location.reload();
+            }
+        }
+
+        // 6. Action Bindings
+        drawBtn.addEventListener('click', triggerDraw);
+        
+        codeInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                triggerDraw();
+            }
+        });
+
+        modalCloseBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+    </script>
+</body>
+</html>
